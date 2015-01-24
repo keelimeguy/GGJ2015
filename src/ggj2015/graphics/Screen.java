@@ -1,5 +1,8 @@
 package ggj2015.graphics;
 
+import ggj2015.graphics.background.Background;
+import ggj2015.graphics.background.ScrollingBackground;
+
 public class Screen {
 
 	public int width, height;
@@ -58,9 +61,9 @@ public class Screen {
 
 				int[] rpixels;
 				//if (angle != 0)
-					//rpixels = rotate(sprite.pixels, sprite.SIZE_X, sprite.SIZE_Y, angle);
+				//rpixels = rotate(sprite.pixels, sprite.SIZE_X, sprite.SIZE_Y, angle);
 				//else
-					rpixels = sprite.pixels;
+				rpixels = sprite.pixels;
 				// Takes the color of the sprite pixel
 				int col = rpixels[xs + ys * sprite.SIZE_X];
 
@@ -70,7 +73,47 @@ public class Screen {
 		}
 	}
 
-	
+	public void renderBackground(Background background, int xp, int yp) {
+		xp -= xOffset;
+		yp -= yOffset;
+
+		for (int y = 0; y < background.height; y++) {
+			int ya = y + yp;
+			for (int x = 0; x < background.width; x++) {
+				int xa = x + xp;
+				if (xa >= width || ya < 0 || ya >= height) break;
+				if (xa < 0) continue;
+				pixels[xa + ya * width] = background.pixels[x + y * background.width];
+			}
+		}
+	}
+
+	public void renderScrollingBackground(ScrollingBackground background, int xp, int yp) {
+		xp -= xOffset;
+		yp -= yOffset;
+
+		for (int y = 0; y < height; y++) {
+			int ya = y - yp;
+			int yy = ya;
+
+			for (int x = 0; x < width; x++) {
+				int xa = x - xp;
+				int xx = xa;
+
+				if (xx >= background.width)
+					xx = xx-background.width;
+				
+				if (xx < 0)
+					xx += background.width-1;
+				if (yy >= background.height)
+					yy -= (background.height-1);
+				if (yy <= 0)
+					yy += background.height-1;
+
+				pixels[x + y * width] = background.pixels[xx%background.width + yy%background.height * background.width];
+			}
+		}
+	}
 
 	/**
 	 * Sets the screen offset

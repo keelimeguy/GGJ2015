@@ -2,7 +2,10 @@ package ggj2015;
 
 import ggj2015.entity.mob.Player;
 import ggj2015.graphics.Screen;
+import ggj2015.graphics.Sprite;
+import ggj2015.graphics.background.Background;
 import ggj2015.input.Keyboard;
+import ggj2015.level.Level;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -27,6 +30,7 @@ public class Game extends Canvas implements Runnable {
 	private Player player;
 	private boolean running = false;
 
+	private Level level;
 	private Screen screen;
 
 	// The image which will be drawn in the game window
@@ -44,8 +48,9 @@ public class Game extends Canvas implements Runnable {
 		frame = new JFrame();
 		key = new Keyboard();
 
-		//level = new RandomLevel(64, 64);-
-		player = new Player(width / 2, height / 2, key);
+		level = new Level(1126, 450);
+		level.setBackground(Background.path, 0, 0);
+		player = new Player(width / 3, 2 * height / 3, key);
 		player.init(null);
 
 		addKeyListener(key);
@@ -124,6 +129,7 @@ public class Game extends Canvas implements Runnable {
 	 */
 	public void update() {
 		key.update();
+		level.update();
 		player.update();
 	}
 
@@ -142,8 +148,10 @@ public class Game extends Canvas implements Runnable {
 		// Clear the screen to black before rendering
 		screen.clear(0xff00ff00);
 
-		int xScroll = player.x - screen.width / 2;
-		int yScroll = player.y - screen.height / 2;
+		int xScroll = player.x - screen.width / 3;
+		int yScroll = player.y - 2 * screen.height / 3;
+
+		level.render(xScroll, yScroll, screen);
 
 		// Render the player
 		player.render(screen);
@@ -154,8 +162,6 @@ public class Game extends Canvas implements Runnable {
 		// Draw the image
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-		g.setColor(Color.RED);
-		g.drawLine(player.x, player.y, player.x, player.y);
 		g.dispose();
 		bs.show();
 	}

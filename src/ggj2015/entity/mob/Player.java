@@ -43,8 +43,6 @@ public class Player extends Mob {
 	 */
 	public void update() {
 
-		//System.out.println("timer: " + timer);
-
 		// Increase the animation step, but don't let it increase indefinitely
 		if (anim < 7500)
 			anim++;
@@ -193,7 +191,6 @@ public class Player extends Mob {
 
 	public boolean jump(double timer) {
 		double g = .01;
-		System.out.println("t: " + timer);
 		if (!collision(0, g * timer, true)) {
 			velY += g * timer;
 			if (timer >= 2 && timer <= 4) jumpStep = 2;
