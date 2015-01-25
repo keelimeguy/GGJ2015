@@ -12,7 +12,7 @@ public class SpriteSheet {
 	public final int SIZE_X, SIZE_Y;
 	public int[] pixels;
 
-	public static SpriteSheet playerSheet = new SpriteSheet("/textures/mobs/player_jump_sprite.png", 345, 80);
+	public static SpriteSheet playerSheet = new SpriteSheet("/textures/mobs/player_jump_sprite_eyes!!!.png", 345, 80);
 
 	/**
 	 * Creates a sprite sheet from a resource path

@@ -1,15 +1,23 @@
 package ggj2015;
 
+import ggj2015.entity.Tree;
+import ggj2015.entity.Wall;
 import ggj2015.entity.mob.Player;
+import ggj2015.entity.textElement.CreditsElement;
+import ggj2015.entity.textElement.PlayElement;
+import ggj2015.entity.textElement.TextElement;
 import ggj2015.graphics.Screen;
 import ggj2015.graphics.Sprite;
 import ggj2015.graphics.background.Background;
 import ggj2015.input.Keyboard;
+import ggj2015.input.Mouse;
 import ggj2015.level.Level;
+import ggj2015.sound.SoundPlayer;
 
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -23,6 +31,7 @@ public class Game extends Canvas implements Runnable {
 	public static int width = 800;
 	public static int height = 450;
 	public static String title = "We Need A Title";
+	public static int stage = 0;
 
 	private Thread thread;
 	private JFrame frame;
@@ -30,8 +39,11 @@ public class Game extends Canvas implements Runnable {
 	private Player player;
 	private boolean running = false;
 
+	private Level start;
+	private Level main;
 	private Level level;
 	private Screen screen;
+	private SoundPlayer snd;
 
 	// The image which will be drawn in the game window
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -48,12 +60,29 @@ public class Game extends Canvas implements Runnable {
 		frame = new JFrame();
 		key = new Keyboard();
 
-		level = new Level(1126, 450);
-		level.setBackground(Background.path, 0, 0);
-		player = new Player(width / 3, 2 * height / 3, key);
-		player.init(null);
+		player = new Player(width / 3, 2 * height / 3, key, level);
+
+		start = new Level(width, height);
+		start.setBackground(Background.path, 0, 0);
+		start.addOver(new CreditsElement(Sprite.credits, width / 2 - Sprite.credits.SIZE_X / 2, height / 4 + Sprite.title.SIZE_Y + Sprite.play.SIZE_Y + 30));
+		start.addOver(new PlayElement(Sprite.play, width / 2 - Sprite.play.SIZE_X / 2, height / 4 + Sprite.title.SIZE_Y));
+		start.addOver(new TextElement(Sprite.title, width / 2 - Sprite.title.SIZE_X / 2, height / 4 - Sprite.title.SIZE_Y / 2));
+
+		main = new Level(1126, 450);
+		main.setBackground(Background.path, 0, 0);
+		main.addUnder(new Tree(player.x + 50, player.y - 290, true));
+		main.addUnder(new Wall(player.x + 2000, player.y - 60));
+		main.addOver(new Tree(player.x + 150, player.y - 100));
+
+		level = start;
+
+		snd = new SoundPlayer();
 
 		addKeyListener(key);
+
+		Mouse mouse = new Mouse();
+		addMouseListener(mouse);
+		addMouseMotionListener(mouse);
 	}
 
 	public static int getWindowWidth() {
@@ -71,6 +100,7 @@ public class Game extends Canvas implements Runnable {
 		running = true;
 		thread = new Thread(this, "Display");
 		thread.start();
+		snd.start();
 	}
 
 	/**
@@ -80,6 +110,7 @@ public class Game extends Canvas implements Runnable {
 		running = false;
 		try {
 			thread.join();
+			snd.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -94,7 +125,11 @@ public class Game extends Canvas implements Runnable {
 		final double ns = 1000000000.0 / 60.0;
 		double delta = 0, dt = 0;
 		int frames = 0, updates = 0;
+
 		requestFocus();
+
+		String audioFilePath = System.getProperty("user.dir") + "/res/audio/music/spooky_loop.wav";
+		snd.playMusic(audioFilePath);
 
 		// The game loop
 		while (running) {
@@ -128,9 +163,14 @@ public class Game extends Canvas implements Runnable {
 	 * Update the game
 	 */
 	public void update() {
-		key.update();
-		level.update();
-		player.update();
+		if (level != main && stage != 0) {
+			level = main;
+			player.init(level);
+		}
+
+		key.update(stage);
+		level.update(screen);
+		player.update(screen);
 	}
 
 	/**
@@ -151,10 +191,12 @@ public class Game extends Canvas implements Runnable {
 		int xScroll = player.x - screen.width / 3;
 		int yScroll = player.y - 2 * screen.height / 3;
 
-		level.render(xScroll, yScroll, screen);
+		level.renderUnder(xScroll, yScroll, screen);
 
 		// Render the player
 		player.render(screen);
+
+		level.renderOver(xScroll, yScroll, screen);
 
 		// Copy the screen pixels to the image to be drawn
 		System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
@@ -162,6 +204,11 @@ public class Game extends Canvas implements Runnable {
 		// Draw the image
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+		g.setColor(Color.RED);
+		g.setFont(new Font(Font.SERIF, 20, 20));
+		g.drawString("Player: (" + player.x + " , " + player.y + ")", screen.width / 3, 20);
+		g.drawString("Scroll: (" + xScroll + " , " + yScroll + ")", screen.width / 3, 60);
+
 		g.dispose();
 		bs.show();
 	}

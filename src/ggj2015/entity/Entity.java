@@ -1,6 +1,5 @@
 package ggj2015.entity;
 
-
 import ggj2015.graphics.Screen;
 
 import java.util.Random;
@@ -9,11 +8,11 @@ import java.util.logging.Level;
 public abstract class Entity {
 
 	public int x, y;
-	private boolean removed = false;
+	private boolean removed = false, solid = false;
 	protected Level level;
 	protected final Random random = new Random();
 
-	public void update() {
+	public void update(Screen screen) {
 	}
 
 	public void render(Screen screen) {
@@ -43,5 +42,8 @@ public abstract class Entity {
 	public void init(Level level) {
 		this.level = level;
 	}
-}
 
+	public boolean collide(double x2, double y2, int dir) {
+		return false;
+	}
+}

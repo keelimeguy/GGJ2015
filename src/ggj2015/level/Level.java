@@ -3,7 +3,6 @@ package ggj2015.level;
 import ggj2015.entity.Entity;
 import ggj2015.graphics.Screen;
 import ggj2015.graphics.background.Background;
-import ggj2015.graphics.background.ScrollingBackground;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,8 @@ public class Level {
 	protected int[] pixels;
 
 	private Background background;
-	private List<Entity> entities = new ArrayList<Entity>();
+	private List<Entity> entitiesUnder = new ArrayList<Entity>();
+	private List<Entity> entitiesOver = new ArrayList<Entity>();
 
 	/**
 	 * Creates a new level
@@ -32,12 +32,15 @@ public class Level {
 		this.background.setY(y);
 	}
 
-	public void update() {
+	public void update(Screen screen) {
 
 		background.update();
 
-		for (int i = 0; i < entities.size(); i++) {
-			entities.get(i).update();
+		for (int i = 0; i < entitiesUnder.size(); i++) {
+			entitiesUnder.get(i).update(screen);
+		}
+		for (int i = 0; i < entitiesOver.size(); i++) {
+			entitiesOver.get(i).update(screen);
 		}
 	}
 
@@ -50,19 +53,41 @@ public class Level {
 	 * @param yScroll : The scroll offset of the screen in the y direction (in pixels)
 	 * @param screen : The screen to render to
 	 */
-	public void render(int xScroll, int yScroll, Screen screen) {
+	public void renderUnder(int xScroll, int yScroll, Screen screen) {
 
 		// Tells the screen how much it is to be offset
 		screen.setOffset(xScroll, yScroll);
 
 		background.render(screen);
 
-		for (int i = 0; i < entities.size(); i++) {
-			entities.get(i).render(screen);
+		for (int i = 0; i < entitiesUnder.size(); i++) {
+			entitiesUnder.get(i).render(screen);
 		}
 	}
 
-	public void add(Entity e) {
-		entities.add(e);
+	public boolean findCollision(double x, double y, int dir) {
+		for (int i = 0; i < entitiesUnder.size(); i++) {
+			Entity e = entitiesUnder.get(i);
+			if(e.collide(x, y, dir))return true;
+		}
+		return false;
+	}
+
+	public void renderOver(int xScroll, int yScroll, Screen screen) {
+
+		// Tells the screen how much it is to be offset
+		screen.setOffset(xScroll, yScroll);
+
+		for (int i = 0; i < entitiesOver.size(); i++) {
+			entitiesOver.get(i).render(screen);
+		}
+	}
+
+	public void addUnder(Entity e) {
+		entitiesUnder.add(e);
+	}
+
+	public void addOver(Entity e) {
+		entitiesOver.add(e);
 	}
 }

@@ -1,5 +1,8 @@
 package ggj2015.graphics;
 
+import ggj2015.entity.Tree;
+import ggj2015.entity.Wall;
+import ggj2015.entity.textElement.TextElement;
 import ggj2015.graphics.background.Background;
 import ggj2015.graphics.background.ScrollingBackground;
 
@@ -64,6 +67,7 @@ public class Screen {
 				//rpixels = rotate(sprite.pixels, sprite.SIZE_X, sprite.SIZE_Y, angle);
 				//else
 				rpixels = sprite.pixels;
+
 				// Takes the color of the sprite pixel
 				int col = rpixels[xs + ys * sprite.SIZE_X];
 
@@ -100,17 +104,58 @@ public class Screen {
 				int xa = x - xp;
 				int xx = xa;
 
-				if (xx >= background.width)
-					xx = xx-background.width;
-				
-				if (xx < 0)
-					xx += background.width-1;
-				if (yy >= background.height)
-					yy -= (background.height-1);
-				if (yy <= 0)
-					yy += background.height-1;
+				if (xx >= background.width) xx = xx - background.width;
 
-				pixels[x + y * width] = background.pixels[xx%background.width + yy%background.height * background.width];
+				if (xx < 0) xx += background.width - 1;
+				if (yy >= background.height) yy -= (background.height - 1);
+				if (yy <= 0) yy += background.height - 1;
+
+				pixels[x + y * width] = background.pixels[xx % background.width + yy % background.height * background.width];
+			}
+		}
+	}
+
+	public void renderTree(Tree tree, int xp, int yp) {
+		xp -= xOffset;
+		yp -= yOffset;
+
+		for (int y = 0; y < tree.sprite.SIZE_Y; y++) {
+			int ya = y + yp;
+			for (int x = 0; x < tree.sprite.SIZE_X; x++) {
+				int xa = x + xp;
+				if (xa >= width || ya < 0 || ya >= height) break;
+				if (xa < 0) continue;
+				int col = tree.sprite.pixels[x + y * tree.sprite.SIZE_X];
+				if (col != 0xffff00ff) pixels[xa + ya * width] = col;
+			}
+		}
+	}
+
+	public void renderWall(Wall wall, int xp, int yp){
+		xp -= xOffset;
+		yp -= yOffset;
+
+		for (int y = 0; y < wall.sprite.SIZE_Y; y++) {
+			int ya = y + yp;
+			for (int x = 0; x < wall.sprite.SIZE_X; x++) {
+				int xa = x + xp;
+				if (xa >= width || ya < 0 || ya >= height) break;
+				if (xa < 0) continue;
+				int col = wall.sprite.pixels[x + y * wall.sprite.SIZE_X];
+				if (col != 0xffff00ff) pixels[xa + ya * width] = col;
+			}
+		}
+	}
+	
+	public void renderTextElement(TextElement elmnt, int xp, int yp) {
+		for (int y = 0; y < elmnt.sprite.SIZE_Y; y++) {
+			int ya = y+yp;
+			for (int x = 0; x < elmnt.sprite.SIZE_X; x++) {
+				int xa = x+xp;
+				if (xa >= width || ya < 0 || ya >= height) break;
+				if (xa < 0) continue;
+				int col = elmnt.sprite.pixels[x + y * elmnt.sprite.SIZE_X];
+				if (col != 0xffff00ff) pixels[xa + ya * width] = col;
 			}
 		}
 	}

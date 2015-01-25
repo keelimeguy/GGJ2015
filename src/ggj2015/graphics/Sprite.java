@@ -21,8 +21,26 @@ public class Sprite {
 	public static Sprite playerJump2 = new Sprite(69, 80, 4, 0, SpriteSheet.playerSheet);
 	public static Sprite playerSquish1 = new Sprite(69, 80, 1, 0, SpriteSheet.playerSheet);
 	public static Sprite playerSquish2 = new Sprite(69, 80, 0, 0, SpriteSheet.playerSheet);
-	public static Sprite playerMove = new Sprite(69, 80, "/textures/mobs/player_move_sprite.png");
-	public static Sprite[] playerRoll = roll(playerMove, 2);
+	public static Sprite playerMove = new Sprite(69, 80, "/textures/mobs/player_move_sprite_eyes!!!.png");
+	public static Sprite[] playerRoll = roll(playerMove, 1);
+
+	// Tree sprites:
+	public static Sprite tree = new Sprite(300, 297, "/textures/tree.png");
+	public static Sprite treeFallen = rotateSprite(tree, Math.PI / 2);
+	
+	// Wall sprites:
+	public static Sprite wall = new Sprite(88, 107, "/textures/wall.png");
+
+	// Text sprites:
+	public static Sprite play = new Sprite(141, 48, "/text/Play.png");
+	public static Sprite title = new Sprite(474, 112, "/text/GGJ2015.png");
+	public static Sprite credits = new Sprite(177, 36, "/text/Credits.png");
+
+	private static Sprite rotateSprite(Sprite s, double angle) {
+		Sprite sprite = new Sprite(s.SIZE_X, s.SIZE_Y, 0);
+		sprite.pixels = rotate(s.pixels, s.SIZE_X, s.SIZE_Y, angle);
+		return sprite;
+	}
 
 	private static Sprite[] roll(Sprite sprite, int angleStep) {
 		Sprite[] sprites = new Sprite[360 / angleStep];
