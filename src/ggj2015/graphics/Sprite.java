@@ -13,7 +13,7 @@ public class Sprite {
 	private SpriteSheet sheet;
 	private String path;
 
-	public static Sprite voidSprite = new Sprite(16, 16, 0x1b87e0);
+	public static Sprite creditScreen = new Sprite(800, 450, "/levels/credits_screen.png");
 
 	// Player sprites:
 	public static Sprite angel = new Sprite(596, 390, "/textures/mobs/Riley Angel.png");

@@ -154,14 +154,6 @@ public class Game extends Canvas implements Runnable {
 
 		// The game loop
 		while (running) {
-			if (Game.stage == -1) {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				running = false;
-			}
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
@@ -174,14 +166,13 @@ public class Game extends Canvas implements Runnable {
 			}
 			render();
 			frames++;
-
 			// Keep track of and display the game's ups and fps every second
-			if (System.currentTimeMillis() - timer >= 1000) {
+			/*if (System.currentTimeMillis() - timer >= 1000) {
 				timer += 1000;
 				frame.setTitle(title + " | ups: " + updates + ", fps: " + frames);
 				updates = 0;
 				frames = 0;
-			}
+			}*/
 		}
 
 		// If we get out of the game loop stop the game
@@ -231,70 +222,25 @@ public class Game extends Canvas implements Runnable {
 
 		// Draw the image
 		Graphics g = bs.getDrawGraphics();
+
+		if (stage == 90) {
+			for (int y = 0; y < Sprite.creditScreen.SIZE_Y; y++) {
+				for (int x = 0; x < Sprite.creditScreen.SIZE_X; x++) {
+					if (x >= width || y < 0 || y >= height) break;
+					if (x < 0) continue;
+					int col = Sprite.creditScreen.pixels[x + y * Sprite.creditScreen.SIZE_X];
+					if (col != 0xffff00ff) pixels[x + y * width] = col;
+				}
+			}
+		}
+
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+
 		/*g.setColor(Color.RED);
 		g.setFont(new Font(Font.SERIF, 20, 20));
 		g.drawString("Player: (" + player.x + " , " + player.y + ")", screen.width / 3, 20);
 		g.drawString("Scroll: (" + xScroll + " , " + yScroll + ")", screen.width / 3, 60);
 		*/
-
-		if (stage == 90) {
-			System.out.println("Credits");
-			g.drawString("Creative Director", width / 3, 60);
-			g.drawString("Mac \'broughtthegangtogether\' Ira", width / 3, 60+12);
-
-			g.drawString("Head Producer", width / 3, 60+12+12+12);
-			g.drawString("Mac \'photosynthesis\' Ira", screen.width / 3, 60+12+12+12+12);
-
-			g.drawString("Brainstorm Trust", screen.width / 3, 60+12+12+12+12+12+12);
-			g.drawString("Eric Burt, Mac Ira, Eric Lin, Nathan Milne, & Keelin Wheeler", screen.width / 3, 60+12+12+12+12+12+12+12);
-
-			g.drawString("Lead Animator", screen.width / 3, 60+12+12+12+12+12+12+12+12+12);
-			g.drawString("Keelin \'waltDisney\' Wheeler", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12);
-
-			g.drawString("Programming Head Wizard", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12);
-			g.drawString("Keelin \'merlin\'  Wheeler", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12);
-
-			g.drawString("Programming Intern", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-			g.drawString("Mac \'shittyprogrammer\' Ira", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-
-			g.drawString("Head Level Designer", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-			g.drawString("Nathan \'Mario\' Milne", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-
-			g.drawString("Special Thanks", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-			g.drawString("Obama", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-
-			g.drawString("Artists", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-			g.drawString("Eric \'biglog\' Lin", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-			g.drawString("Shawn \'sandman\' Gale", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-
-			g.drawString("Head Composer", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-			g.drawString("Eric \'MofoMozart\' Burt", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-
-			g.drawString("Caterer", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-			g.drawString("Nathan \'hasMoney\' Milne", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-
-			g.drawString("Audio Engineer", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-			g.drawString("Eric \'Apollo\' Burt", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-
-			g.drawString("Motivational Leader", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-			g.drawString("The USG room", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-
-			g.drawString("Beta Tester", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-			g.drawString("Keelin \'mecha\' Wheeler", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-
-			g.drawString("No Show", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-			g.drawString("Matt \'TheScrub\' Nolan", screen.width / 3, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-
-			g.drawString("GlobalGameJam2015", screen.width / 6, 60+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12+12);
-			try {
-				Thread.sleep(20000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			stage =-1;
-		}
 
 		g.dispose();
 		bs.show();

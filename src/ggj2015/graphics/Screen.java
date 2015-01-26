@@ -237,8 +237,13 @@ public class Screen {
 		if (xOffset >= 8345) {
 			Game.stage = 9001;
 		}
-		if (xOffset <= -1045) {
-			Game.stage = -1;
+		if (yOffset <= -1045) {
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			Game.stage = 90;
 		}
 
 		this.xOffset = xOffset;

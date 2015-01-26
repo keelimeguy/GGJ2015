@@ -68,7 +68,6 @@ public class MusicPlayer extends Thread implements LineListener {
 				if (start != end) audioClip.setLoopPoints(start, end);
 				audioClip.loop(Clip.LOOP_CONTINUOUSLY);
 			} else {
-				System.out.println("Jump sound");
 				audioClip.start();
 			}
 			while (!playCompleted) {
@@ -137,14 +136,14 @@ public class MusicPlayer extends Thread implements LineListener {
 
 		if (type == LineEvent.Type.START) {
 			flag = false;
-			System.out.println("Playback started.");
+			//System.out.println("Playback started.");
 
 		} else if (type == LineEvent.Type.STOP) {
 			if (!flag) {
 				flag = true;
 				playCompleted = true;
 			}
-			System.out.println("Playback completed.");
+			//System.out.println("Playback completed.");
 		}
 
 	}
