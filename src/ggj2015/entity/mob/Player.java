@@ -8,7 +8,8 @@ import ggj2015.level.Level;
 
 public class Player extends Mob {
 
-	public static final double MAX_VEL = 6.0, MIN_VEL = -MAX_VEL;
+	public static final double MAX_VEL_A = 4.0;
+	public static double MAX_VEL = MAX_VEL_A, MIN_VEL = -MAX_VEL;
 
 	private Keyboard input;
 	private Sprite sprite;
@@ -48,6 +49,13 @@ public class Player extends Mob {
 	public void update(Screen screen) {
 
 		if (Game.stage != 0) {
+			if(Game.stage>9000){
+				move(0,0,-1);
+			}
+			if (Game.stage == 3) {
+				MAX_VEL = 1.0;
+			} else
+				MAX_VEL = MAX_VEL_A;
 
 			// Increase the animation step, but don't let it increase indefinitely
 			if (anim < 7500)
@@ -57,13 +65,15 @@ public class Player extends Mob {
 
 			// Update the change in position when a movement key is pressed
 			double dx = 0.0, dy = 0.0;
-			//if (input.up) dy--;
+			if (input.up) dy--;
 			//if (input.down) dy++;
 			if (input.left) dx--;
 			if (input.right) dx++;
 
 			// Jump when space key is pressed
 			if (input.space && !jumping && !landing) {
+				String audioFilePath = System.getProperty("user.dir") + "/res/audio/sounds/jump.wav";
+				Game.snd.playSound(audioFilePath);
 				jumping = true;
 				jumpStep = 1;
 				timerY = 0;
@@ -73,7 +83,7 @@ public class Player extends Mob {
 
 			// Move the player if its position will change, set walking flag accordingly
 			if ((dx != 0.0 || dy != 0.0) && !slowing) {
-				move(timerX, dx, 0.0); //dy);
+				move(timerX, dx, dy);
 				timerX += 0.02;
 				if (timerX >= 1000) timerX = 0;
 				if (velX < MAX_VEL) {
@@ -122,7 +132,11 @@ public class Player extends Mob {
 	 *  Renders the player according to its direction and animation step
 	 */
 	public void render(Screen screen) {
+
 		if (Game.stage != 0) {
+			if (Game.stage > 9000) {
+				sprite = Sprite.angel;
+			}
 			// Flip variable (0=none, 1=horizontal, 2=vertical, 3=both)
 			int flip = 0;
 			if (dir == 3) flip = 1;

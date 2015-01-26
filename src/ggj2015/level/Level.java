@@ -12,7 +12,7 @@ public class Level {
 	protected int width, height;
 	protected int[] pixels;
 
-	private Background background;
+	private List<Background> backgrounds = new ArrayList<Background>();
 	private List<Entity> entitiesUnder = new ArrayList<Entity>();
 	private List<Entity> entitiesOver = new ArrayList<Entity>();
 
@@ -26,16 +26,17 @@ public class Level {
 		this.height = height;
 	}
 
-	public void setBackground(Background background, int x, int y) {
-		this.background = background;
-		this.background.setX(x);
-		this.background.setY(y);
+	public void addBackground(Background background, int x, int y) {
+		background.setX(x);
+		background.setY(y);
+		backgrounds.add(background);
 	}
 
 	public void update(Screen screen) {
 
-		background.update();
-
+		for (int i = 0; i < backgrounds.size(); i++) {
+			backgrounds.get(i).update(screen);
+		}
 		for (int i = 0; i < entitiesUnder.size(); i++) {
 			entitiesUnder.get(i).update(screen);
 		}
@@ -58,8 +59,9 @@ public class Level {
 		// Tells the screen how much it is to be offset
 		screen.setOffset(xScroll, yScroll);
 
-		background.render(screen);
-
+		for (int i = 0; i < backgrounds.size(); i++) {
+			backgrounds.get(i).render(screen);
+		}
 		for (int i = 0; i < entitiesUnder.size(); i++) {
 			entitiesUnder.get(i).render(screen);
 		}

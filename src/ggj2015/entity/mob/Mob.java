@@ -31,7 +31,8 @@ public abstract class Mob extends Entity {
 
 		velX = dx * Player.MAX_VEL * Math.sin(timer);
 		// If the mob won't collide, move
-		//if (!collision(0, dy * 5, true)) y += 5 * dy;
+		if (!collision( 0, velX, true)) y += dy;
+
 		if (!collision(velX, 0, true)) x += Math.round(velX);
 
 	}

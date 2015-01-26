@@ -12,8 +12,9 @@ public class CreditsElement extends TextElement {
 	}
 
 	public void update(Screen screen) {
-		if (Mouse.getX() > x && Mouse.getX() < x + sprite.SIZE_X && Mouse.getY() > y && Mouse.getY() > y + sprite.SIZE_Y) {
+		if (Mouse.getX() > x && Mouse.getX() < x + sprite.SIZE_X && Mouse.getY() > y && Mouse.getY() < y + sprite.SIZE_Y) {
 			if (Mouse.getB() == 1) {
+				Game.stage = 90;
 			}
 		}
 	}

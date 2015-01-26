@@ -32,11 +32,11 @@ public class SoundPlayer extends Thread implements LineListener {
 	 */
 	private boolean playCompleted;
 	private String path = null;
-	private boolean playing = false;
-	
+	private boolean playing = false, looping = false;
+
 	public void run() {
-		while(true)
-		if (playing) play(path);
+		while (true)
+			if (playing) play(path);
 	}
 
 	/**
@@ -59,7 +59,10 @@ public class SoundPlayer extends Thread implements LineListener {
 
 			audioClip.open(audioStream);
 
-			audioClip.start();
+			if (looping)
+				audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+			else
+				audioClip.start();
 
 			while (!playCompleted) {
 				// wait for the playback completes
@@ -70,8 +73,8 @@ public class SoundPlayer extends Thread implements LineListener {
 				}
 			}
 
-			if(playCompleted) playing = false;
-			
+			if (playCompleted) playing = false;
+
 			audioClip.close();
 
 		} catch (UnsupportedAudioFileException ex) {
@@ -90,6 +93,13 @@ public class SoundPlayer extends Thread implements LineListener {
 	public void playMusic(String audioFilePath) {
 		path = audioFilePath;
 		playing = true;
+		looping = true;
+	}
+
+	public void playSound(String audioFilePath) {
+		path = audioFilePath;
+		playing = true;
+		looping = false;
 	}
 
 	/**

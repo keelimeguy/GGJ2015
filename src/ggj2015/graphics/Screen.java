@@ -1,5 +1,7 @@
 package ggj2015.graphics;
 
+import ggj2015.Game;
+import ggj2015.entity.Mud;
 import ggj2015.entity.Tree;
 import ggj2015.entity.Wall;
 import ggj2015.entity.textElement.TextElement;
@@ -42,37 +44,52 @@ public class Screen {
 	 * @param flip : How to flip the sprite (none = 0, horizontal = 1, vertical = 2, both ways = 3)
 	 */
 	public void renderPlayer(int xp, int yp, Sprite sprite, int flip) {
+		if (Game.stage > 9000) {
+			xp -= xOffset;
+			yp -= yOffset;
 
-		// Updates the position given the screen offset
-		yp -= yOffset;
-		xp -= xOffset;
+			for (int y = 0; y < sprite.SIZE_Y; y++) {
+				int ya = y + yp;
+				for (int x = 0; x < sprite.SIZE_X; x++) {
+					int xa = x + xp;
+					if (xa >= width || ya < 0 || ya >= height) break;
+					if (xa < 0) continue;
+					int col = sprite.pixels[x + y * sprite.SIZE_X];
+					if (col != 0xffff00ff) pixels[xa + ya * width] = col;
+				}
+			}
+		} else {
+			// Updates the position given the screen offset
+			yp -= yOffset;
+			xp -= xOffset;
 
-		for (int y = 0; y < sprite.SIZE_Y; y++) {
-			int ya = y + yp, ys = y;
+			for (int y = 0; y < sprite.SIZE_Y; y++) {
+				int ya = y + yp, ys = y;
 
-			// Flip vertical
-			if (flip > 1) ys = sprite.SIZE_Y - 1 - y;
+				// Flip vertical
+				if (flip > 1) ys = sprite.SIZE_Y - 1 - y;
 
-			for (int x = 0; x < sprite.SIZE_X; x++) {
-				int xa = x + xp, xs = x;
+				for (int x = 0; x < sprite.SIZE_X; x++) {
+					int xa = x + xp, xs = x;
 
-				// Flip horizontal
-				if (flip == 1 || flip == 3) xs = sprite.SIZE_X - 1 - x;
+					// Flip horizontal
+					if (flip == 1 || flip == 3) xs = sprite.SIZE_X - 1 - x;
 
-				if (xa < -sprite.SIZE_X || xa >= width || ya < 0 || ya >= height) break;
-				if (xa < 0) continue;
+					if (xa < -sprite.SIZE_X || xa >= width || ya < 0 || ya >= height) break;
+					if (xa < 0) continue;
 
-				int[] rpixels;
-				//if (angle != 0)
-				//rpixels = rotate(sprite.pixels, sprite.SIZE_X, sprite.SIZE_Y, angle);
-				//else
-				rpixels = sprite.pixels;
+					int[] rpixels;
+					//if (angle != 0)
+					//rpixels = rotate(sprite.pixels, sprite.SIZE_X, sprite.SIZE_Y, angle);
+					//else
+					rpixels = sprite.pixels;
 
-				// Takes the color of the sprite pixel
-				int col = rpixels[xs + ys * sprite.SIZE_X];
+					// Takes the color of the sprite pixel
+					int col = rpixels[xs + ys * sprite.SIZE_X];
 
-				// If the color is 0xFF00FF don't render that pixel
-				if (col != 0xffff00ff) pixels[xa + ya * width] = col;
+					// If the color is 0xFF00FF don't render that pixel
+					if (col != 0xffff00ff) pixels[xa + ya * width] = col;
+				}
 			}
 		}
 	}
@@ -131,7 +148,7 @@ public class Screen {
 		}
 	}
 
-	public void renderWall(Wall wall, int xp, int yp){
+	public void renderWall(Wall wall, int xp, int yp) {
 		xp -= xOffset;
 		yp -= yOffset;
 
@@ -146,12 +163,28 @@ public class Screen {
 			}
 		}
 	}
-	
+
+	public void renderMud(Mud mud, int xp, int yp) {
+		xp -= xOffset;
+		yp -= yOffset;
+
+		for (int y = 0; y < mud.sprite.SIZE_Y; y++) {
+			int ya = y + yp;
+			for (int x = 0; x < mud.sprite.SIZE_X; x++) {
+				int xa = x + xp;
+				if (xa >= width || ya < 0 || ya >= height) break;
+				if (xa < 0) continue;
+				int col = mud.sprite.pixels[x + y * mud.sprite.SIZE_X];
+				if (col != 0xffff00ff) pixels[xa + ya * width] = col;
+			}
+		}
+	}
+
 	public void renderTextElement(TextElement elmnt, int xp, int yp) {
 		for (int y = 0; y < elmnt.sprite.SIZE_Y; y++) {
-			int ya = y+yp;
+			int ya = y + yp;
 			for (int x = 0; x < elmnt.sprite.SIZE_X; x++) {
-				int xa = x+xp;
+				int xa = x + xp;
 				if (xa >= width || ya < 0 || ya >= height) break;
 				if (xa < 0) continue;
 				int col = elmnt.sprite.pixels[x + y * elmnt.sprite.SIZE_X];
@@ -166,6 +199,48 @@ public class Screen {
 	 * @param yOffset : The y offset of the screen
 	 */
 	public void setOffset(int xOffset, int yOffset) {
+		if (Game.stage != 0 && Game.stage!=90) Game.stage = 1;
+		if (xOffset >= 3800) {
+			Game.stage = 2;
+		}
+		if (xOffset >= 6200 && yOffset >= 0) {
+			Game.stage = 3;
+		}
+		if (xOffset >= 6750) {
+			Game.stage = 1;
+		}
+		if (xOffset >= 2600 && !Game.flags[2]) {
+			Game.flags[2] = true;
+			String audioFilePath = System.getProperty("user.dir") + "/res/audio/narration/GGJ-narration2.wav";
+			Game.snd.playSound(audioFilePath);
+		}
+		if (xOffset >= 3000 && !Game.flags[3]) {
+			Game.flags[3] = true;
+			String audioFilePath = System.getProperty("user.dir") + "/res/audio/narration/GGJ-narration3.wav";
+			Game.snd.playSound(audioFilePath);
+		}
+		if (xOffset >= 4300 && !Game.flags[4]) {
+			Game.flags[4] = true;
+			String audioFilePath = System.getProperty("user.dir") + "/res/audio/narration/GGJ-narration4.wav";
+			Game.snd.playSound(audioFilePath);
+		}
+		if (xOffset >= 6000 && !Game.flags[5]) {
+			Game.flags[5] = true;
+			String audioFilePath = System.getProperty("user.dir") + "/res/audio/narration/GGJ-narration5.wav";
+			Game.snd.playSound(audioFilePath);
+		}
+		if (xOffset >= 8050 && !Game.flags[6]) {
+			Game.flags[6] = true;
+			String audioFilePath = System.getProperty("user.dir") + "/res/audio/narration/GGJ-narration6.wav";
+			Game.snd.playSound(audioFilePath);
+		}
+		if (xOffset >= 8345) {
+			Game.stage = 9001;
+		}
+		if (xOffset <= -1045) {
+			Game.stage = -1;
+		}
+
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 	}

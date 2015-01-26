@@ -16,6 +16,7 @@ public class Sprite {
 	public static Sprite voidSprite = new Sprite(16, 16, 0x1b87e0);
 
 	// Player sprites:
+	public static Sprite angel = new Sprite(596, 390, "/textures/mobs/Riley Angel.png");
 	public static Sprite player = new Sprite(69, 80, 2, 0, SpriteSheet.playerSheet);
 	public static Sprite playerJump1 = new Sprite(69, 80, 3, 0, SpriteSheet.playerSheet);
 	public static Sprite playerJump2 = new Sprite(69, 80, 4, 0, SpriteSheet.playerSheet);
@@ -27,9 +28,13 @@ public class Sprite {
 	// Tree sprites:
 	public static Sprite tree = new Sprite(300, 297, "/textures/tree.png");
 	public static Sprite treeFallen = rotateSprite(tree, Math.PI / 2);
-	
+
 	// Wall sprites:
-	public static Sprite wall = new Sprite(88, 107, "/textures/wall.png");
+	public static Sprite wall = new Sprite(100, 100, "/textures/wall.png");
+
+	// Mud sprites:
+	public static Sprite mud = new Sprite(726, 124, "/textures/Mud.png");
+	public static Sprite mud2 = new Sprite(726, 217, "/textures/mud2.png");
 
 	// Text sprites:
 	public static Sprite play = new Sprite(141, 48, "/text/Play.png");

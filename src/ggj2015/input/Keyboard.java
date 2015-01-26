@@ -8,7 +8,7 @@ public class Keyboard implements KeyListener {
 	private static final int START = 0, TREE = 1, WALL = 2, MUD = 3;
 
 	private boolean[] keys = new boolean[120];
-	public boolean up, down, left, right, space;
+	public boolean up, down, left, right, space, fly = false;;
 
 	/**
 	 * Sets a flag to determine what action should occur given associated key presses
@@ -20,14 +20,14 @@ public class Keyboard implements KeyListener {
 			down = keys[KeyEvent.VK_DOWN] || keys[KeyEvent.VK_S];
 			left = keys[KeyEvent.VK_LEFT] || keys[KeyEvent.VK_A];
 			right = keys[KeyEvent.VK_RIGHT] || keys[KeyEvent.VK_D];
-			space = keys[KeyEvent.VK_SPACE];
+			space = keys[KeyEvent.VK_UP] || keys[KeyEvent.VK_W];
 			break;
 		case TREE:
 			up = keys[KeyEvent.VK_UP] || keys[KeyEvent.VK_W];
 			down = keys[KeyEvent.VK_DOWN] || keys[KeyEvent.VK_S];
 			left = keys[KeyEvent.VK_LEFT] || keys[KeyEvent.VK_A];
 			right = keys[KeyEvent.VK_RIGHT] || keys[KeyEvent.VK_D];
-			space = keys[KeyEvent.VK_SPACE];
+			space = keys[KeyEvent.VK_UP] || keys[KeyEvent.VK_W];
 			break;
 		case WALL:
 			up = keys[KeyEvent.VK_UP] || keys[KeyEvent.VK_W];
@@ -41,7 +41,11 @@ public class Keyboard implements KeyListener {
 			down = keys[KeyEvent.VK_DOWN] || keys[KeyEvent.VK_S];
 			left = keys[KeyEvent.VK_LEFT] || keys[KeyEvent.VK_A];
 			right = keys[KeyEvent.VK_RIGHT] || keys[KeyEvent.VK_D];
-			space = keys[KeyEvent.VK_SPACE];
+			space = false;//keys[KeyEvent.VK_UP] || keys[KeyEvent.VK_W];
+			break;
+		case 9001:
+			up = down = left = right = space = false;
+			fly = true;
 			break;
 		}
 	}

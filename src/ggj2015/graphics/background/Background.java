@@ -10,7 +10,9 @@ import javax.imageio.ImageIO;
 
 public class Background {
 
-	public static Background path = new ScrollingBackground("/levels/background_by_nkorth.png",0,0);
+	public static Background title = new ScrollingBackground("/levels/background_by_nkorth.png",0,0);
+	public static Background path = new Background("/levels/background.png",0,0);
+	public static Background end = new Background("/levels/altar.png",path.width,0);
 	
 	public int[] pixels;
 	public int width, height, x, y;
@@ -37,7 +39,7 @@ public class Background {
 		this.y = y;
 	}
 
-	public void update() {
+	public void update(Screen screen) {
 
 	}
 
