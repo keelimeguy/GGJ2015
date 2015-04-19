@@ -211,27 +211,27 @@ public class Screen {
 		}
 		if (xOffset >= 2600 && !Game.flags[2]) {
 			Game.flags[2] = true;
-			String audioFilePath = System.getProperty("user.dir") + "/res/audio/narration/GGJ-narration2.wav";
+			String audioFilePath = "/audio/narration/GGJ-narration2.wav";
 			Game.snd.playSound(audioFilePath);
 		}
 		if (xOffset >= 3000 && !Game.flags[3]) {
 			Game.flags[3] = true;
-			String audioFilePath = System.getProperty("user.dir") + "/res/audio/narration/GGJ-narration3.wav";
+			String audioFilePath = "/audio/narration/GGJ-narration3.wav";
 			Game.snd.playSound(audioFilePath);
 		}
 		if (xOffset >= 4300 && !Game.flags[4]) {
 			Game.flags[4] = true;
-			String audioFilePath = System.getProperty("user.dir") + "/res/audio/narration/GGJ-narration4.wav";
+			String audioFilePath = "/audio/narration/GGJ-narration4.wav";
 			Game.snd.playSound(audioFilePath);
 		}
 		if (xOffset >= 6000 && !Game.flags[5]) {
 			Game.flags[5] = true;
-			String audioFilePath = System.getProperty("user.dir") + "/res/audio/narration/GGJ-narration5.wav";
+			String audioFilePath = "/audio/narration/GGJ-narration5.wav";
 			Game.snd.playSound(audioFilePath);
 		}
 		if (xOffset >= 8050 && !Game.flags[6]) {
 			Game.flags[6] = true;
-			String audioFilePath = System.getProperty("user.dir") + "/res/audio/narration/GGJ-narration6.wav";
+			String audioFilePath = "/audio/narration/GGJ-narration6.wav";
 			Game.snd.playSound(audioFilePath);
 		}
 		if (xOffset >= 8345) {

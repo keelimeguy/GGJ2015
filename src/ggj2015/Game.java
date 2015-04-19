@@ -116,6 +116,7 @@ public class Game extends Canvas implements Runnable {
 	public synchronized void start() {
 		running = true;
 		thread = new Thread(this, "Display");
+		createBufferStrategy(3);
 		thread.start();
 		snd.start();
 		//noise.start();
@@ -147,7 +148,7 @@ public class Game extends Canvas implements Runnable {
 
 		requestFocus();
 
-		String audioFilePath = System.getProperty("user.dir") + "/res/audio/music/Riley's Jig (Game Version).wav";
+		String audioFilePath = "/audio/music/Riley's Jig (Game Version).wav";
 		//String audioFilePath = System.getProperty("user.dir") + "/res/audio/sounds/jump.wav";
 
 		snd.playMusic(audioFilePath, 0, 44100 * 64 + 22050);
@@ -164,7 +165,8 @@ public class Game extends Canvas implements Runnable {
 				updates++;
 				delta--;
 			}
-			render();
+			Graphics g = getGraphics();
+			update(g);
 			frames++;
 			// Keep track of and display the game's ups and fps every second
 			/*if (System.currentTimeMillis() - timer >= 1000) {
@@ -195,33 +197,34 @@ public class Game extends Canvas implements Runnable {
 	/**
 	 * Render the game
 	 */
-	public void render() {
+	public void paint(Graphics g) {
 
 		// Create a buffer strategy for the game
-		BufferStrategy bs = getBufferStrategy();
-		if (bs == null) {
-			createBufferStrategy(3);
-			return;
-		}
+		//BufferStrategy bs = getBufferStrategy();
+		//if (bs == null) {
+		//createBufferStrategy(3);
+		//return;
+		//}
 
 		// Clear the screen to black before rendering
-		screen.clear(0xff00ff00);
+		//screen.clear(0xff00ff00);
 
 		int xScroll = player.x - screen.width / 3;
 		int yScroll = player.y - 2 * screen.height / 3;
 
-		level.renderUnder(xScroll, yScroll, screen);
+		Screen scrn = new Screen(width, height);
+
+		scrn.clear(0x00FF00);
+
+		level.renderUnder(xScroll, yScroll, scrn);
 
 		// Render the player
-		player.render(screen);
+		player.render(scrn);
 
-		level.renderOver(xScroll, yScroll, screen);
-
-		// Copy the screen pixels to the image to be drawn
-		System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
+		level.renderOver(xScroll, yScroll, scrn);
 
 		// Draw the image
-		Graphics g = bs.getDrawGraphics();
+		//Graphics g = bs.getDrawGraphics();
 
 		if (stage == 90) {
 			for (int y = 0; y < Sprite.creditScreen.SIZE_Y; y++) {
@@ -229,10 +232,15 @@ public class Game extends Canvas implements Runnable {
 					if (x >= width || y < 0 || y >= height) break;
 					if (x < 0) continue;
 					int col = Sprite.creditScreen.pixels[x + y * Sprite.creditScreen.SIZE_X];
-					if (col != 0xffff00ff) pixels[x + y * width] = col;
+					if (col != 0xffff00ff) scrn.pixels[x + y * width] = col;
 				}
 			}
 		}
+
+		System.arraycopy(scrn.pixels, 0, screen.pixels, 0, screen.pixels.length);
+
+		// Copy the screen pixels to the image to be drawn
+		System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
@@ -243,7 +251,11 @@ public class Game extends Canvas implements Runnable {
 		*/
 
 		g.dispose();
-		bs.show();
+		//bs.show();
+	}
+
+	public void update(Graphics g) {
+		paint(g);
 	}
 
 	/**
@@ -252,9 +264,11 @@ public class Game extends Canvas implements Runnable {
 	 */
 	public static void main(String[] args) {
 
+		System.setProperty("sun.awt.noerasebackground", "true");
+
 		// Create the game
 		Game game = new Game();
-		game.frame.setResizable(false);
+		game.frame.setResizable(true);
 		game.frame.setTitle(Game.title);
 		game.frame.add(game);
 		game.frame.pack();

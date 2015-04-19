@@ -72,7 +72,7 @@ public class Player extends Mob {
 
 			// Jump when space key is pressed
 			if (input.space && !jumping && !landing) {
-				String audioFilePath = System.getProperty("user.dir") + "/res/audio/sounds/jump.wav";
+				String audioFilePath =  "/audio/sounds/jump.wav";//System.getProperty("user.dir")
 				Game.snd.playSound(audioFilePath);
 				jumping = true;
 				jumpStep = 1;

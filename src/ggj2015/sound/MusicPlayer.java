@@ -47,10 +47,10 @@ public class MusicPlayer extends Thread implements LineListener {
 	 * @param audioFilePath Path of the audio file.
 	 */
 	private void play(String audioFilePath) {
-		File audioFile = new File(audioFilePath);
+		//File audioFile = new File(audioFilePath);
 
 		try {
-			AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+			AudioInputStream audioStream = AudioSystem.getAudioInputStream(getClass().getResource(audioFilePath));//audioFile);
 
 			AudioFormat format = audioStream.getFormat();
 
