@@ -13,6 +13,12 @@ public class Screen {
 	public int width, height;
 	public int[] pixels;
 
+	private int timer = 0;
+	public long lastTime = -1;
+	final double ns = 1000.0 / 60.0;
+	private double delta = 0;
+	public boolean lock = false;
+
 	public int xOffset, yOffset;
 
 	/**
@@ -199,7 +205,7 @@ public class Screen {
 	 * @param yOffset : The y offset of the screen
 	 */
 	public void setOffset(int xOffset, int yOffset) {
-		if (Game.stage != 0 && Game.stage!=90) Game.stage = 1;
+		if (Game.stage != 0 && Game.stage != 90) Game.stage = 1;
 		if (xOffset >= 3800) {
 			Game.stage = 2;
 		}
@@ -238,12 +244,18 @@ public class Screen {
 			Game.stage = 9001;
 		}
 		if (yOffset <= -1045) {
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			if (lastTime == -1) lastTime = System.currentTimeMillis();
+			long now = System.currentTimeMillis();
+			delta = (now - lastTime) / ns;
+			if (delta >= 1) {
+				delta--;
+				timer++;
+				lastTime = now;
 			}
-			Game.stage = 90;
+			if (timer >= 120) {
+				lock = true;
+				Game.stage = 90;
+			}
 		}
 
 		this.xOffset = xOffset;

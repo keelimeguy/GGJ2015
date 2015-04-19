@@ -13,7 +13,7 @@ public class Wall extends Entity {
 		sprite = Sprite.wall;
 	}
 
-	public void update(Screen screen) {
+	public void update(int width, int height, Screen screen) {
 
 	}
 

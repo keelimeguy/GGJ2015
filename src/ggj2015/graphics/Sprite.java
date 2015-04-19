@@ -18,8 +18,7 @@ public class Sprite {
 
 	// Player sprites:
 	public static Sprite angel = new Sprite(596, 390, "/textures/mobs/Riley Angel.png");
-	public static Sprite playera = new Sprite(69, 80, 2, 0, SpriteSheet.playerSheet);
-	public static Sprite player = new Sprite(12, 14, playera);
+	public static Sprite player = new Sprite(69, 80, 2, 0, SpriteSheet.playerSheet);
 	public static Sprite playerJump1 = new Sprite(69, 80, 3, 0, SpriteSheet.playerSheet);
 	public static Sprite playerJump2 = new Sprite(69, 80, 4, 0, SpriteSheet.playerSheet);
 	public static Sprite playerSquish1 = new Sprite(69, 80, 1, 0, SpriteSheet.playerSheet);

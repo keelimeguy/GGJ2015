@@ -46,11 +46,11 @@ public class Player extends Mob {
 	/**
 	 * Updates the player animation and moves the player when necessary
 	 */
-	public void update(Screen screen) {
+	public void update(int width, int height, Screen screen) {
 
 		if (Game.stage != 0) {
-			if(Game.stage>9000){
-				move(0,0,-1);
+			if (Game.stage > 9000) {
+				if (screen.lastTime == -1) move(0, 0, -1);
 			}
 			if (Game.stage == 3) {
 				MAX_VEL = 1.0;
@@ -72,7 +72,7 @@ public class Player extends Mob {
 
 			// Jump when space key is pressed
 			if (input.space && !jumping && !landing) {
-				String audioFilePath =  "/audio/sounds/jump.wav";//System.getProperty("user.dir")
+				String audioFilePath = "/audio/sounds/jump.wav";//System.getProperty("user.dir")
 				Game.snd.playSound(audioFilePath);
 				jumping = true;
 				jumpStep = 1;
@@ -240,7 +240,7 @@ public class Player extends Mob {
 
 	protected boolean collision(double dx, double dy, boolean goTillHit) {
 		boolean solid = false;
-		solid = level.findCollision(x + dx, y + dy, dir);
+		if (level != null) solid = level.findCollision(x + dx, y + dy, dir);
 		return solid;
 	}
 

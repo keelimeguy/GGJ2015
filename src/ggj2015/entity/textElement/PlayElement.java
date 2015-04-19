@@ -11,9 +11,9 @@ public class PlayElement extends TextElement {
 		super(sprite, x, y);
 	}
 
-	public void update(Screen screen) {
+	public void update(int width, int height, Screen screen) {
 
-		if (Mouse.getX() > x && Mouse.getX() < x + sprite.SIZE_X && Mouse.getY() > y && Mouse.getY() < y + sprite.SIZE_Y) {
+		if (Mouse.getX() > x * width / screen.width && Mouse.getX() < (x + sprite.SIZE_X) * width / screen.width && Mouse.getY() > y * height / screen.height && Mouse.getY() < (y + sprite.SIZE_Y) * height / screen.height) {
 			if (Mouse.getB() == 1) {
 				Game.stage = 1;
 				String audioFilePath = "/audio/narration/GGJ-narration1.wav";

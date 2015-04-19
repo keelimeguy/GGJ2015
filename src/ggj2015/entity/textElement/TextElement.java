@@ -14,7 +14,7 @@ public class TextElement extends Entity {
 		this.y = y;
 	}
 
-	public void update(Screen screen) {
+	public void update(int width, int height, Screen screen) {
 		
 	}
 

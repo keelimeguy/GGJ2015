@@ -38,7 +38,7 @@ public class Game extends Canvas implements Runnable {
 	public static int stage = 0;
 
 	private Thread thread;
-	private JFrame frame;
+	private static JFrame frame;
 	private Keyboard key;
 	private Player player;
 	private boolean running = false;
@@ -103,11 +103,11 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public static int getWindowWidth() {
-		return width;
+		return frame.getContentPane().getWidth();
 	}
 
 	public static int getWindowHeight() {
-		return height;
+		return frame.getContentPane().getHeight();
 	}
 
 	/**
@@ -119,7 +119,6 @@ public class Game extends Canvas implements Runnable {
 		createBufferStrategy(3);
 		thread.start();
 		snd.start();
-		//noise.start();
 	}
 
 	/**
@@ -130,7 +129,6 @@ public class Game extends Canvas implements Runnable {
 		try {
 			thread.join();
 			snd.join();
-			//noise.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -149,7 +147,6 @@ public class Game extends Canvas implements Runnable {
 		requestFocus();
 
 		String audioFilePath = "/audio/music/Riley's Jig (Game Version).wav";
-		//String audioFilePath = System.getProperty("user.dir") + "/res/audio/sounds/jump.wav";
 
 		snd.playMusic(audioFilePath, 0, 44100 * 64 + 22050);
 
@@ -190,8 +187,8 @@ public class Game extends Canvas implements Runnable {
 			player.init(level);
 		}
 		key.update(stage);
-		level.update(screen);
-		player.update(screen);
+		level.update(getWindowWidth(), getWindowHeight(), screen);
+		player.update(getWindowWidth(), getWindowHeight(), screen);
 	}
 
 	/**
@@ -199,34 +196,24 @@ public class Game extends Canvas implements Runnable {
 	 */
 	public void paint(Graphics g) {
 
-		// Create a buffer strategy for the game
-		//BufferStrategy bs = getBufferStrategy();
-		//if (bs == null) {
-		//createBufferStrategy(3);
-		//return;
-		//}
-
-		// Clear the screen to black before rendering
-		//screen.clear(0xff00ff00);
-
 		int xScroll = player.x - screen.width / 3;
 		int yScroll = player.y - 2 * screen.height / 3;
 
+		if (!screen.lock) screen.setOffset(xScroll, yScroll);
+
 		Screen scrn = new Screen(width, height);
 
-		scrn.clear(0x00FF00);
+		// Clear the screen to black before rendering
+		scrn.clear(0xFF000000);
 
-		level.renderUnder(xScroll, yScroll, scrn);
+		if (stage != 90) {
+			level.renderUnder(xScroll, yScroll, scrn);
 
-		// Render the player
-		player.render(scrn);
+			// Render the player
+			player.render(scrn);
 
-		level.renderOver(xScroll, yScroll, scrn);
-
-		// Draw the image
-		//Graphics g = bs.getDrawGraphics();
-
-		if (stage == 90) {
+			level.renderOver(xScroll, yScroll, scrn);
+		} else if (stage == 90) {
 			for (int y = 0; y < Sprite.creditScreen.SIZE_Y; y++) {
 				for (int x = 0; x < Sprite.creditScreen.SIZE_X; x++) {
 					if (x >= width || y < 0 || y >= height) break;
@@ -251,7 +238,6 @@ public class Game extends Canvas implements Runnable {
 		*/
 
 		g.dispose();
-		//bs.show();
 	}
 
 	public void update(Graphics g) {

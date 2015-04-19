@@ -18,7 +18,7 @@ public class Mud extends Entity{
 		sprite = Sprite.mud2;
 	}
 	
-	public void update(Screen screen){
+	public void update(int width, int height, Screen screen){
 		
 	}
 	

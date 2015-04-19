@@ -32,16 +32,16 @@ public class Level {
 		backgrounds.add(background);
 	}
 
-	public void update(Screen screen) {
+	public void update(int width, int height, Screen screen) {
 
 		for (int i = 0; i < backgrounds.size(); i++) {
 			backgrounds.get(i).update(screen);
 		}
 		for (int i = 0; i < entitiesUnder.size(); i++) {
-			entitiesUnder.get(i).update(screen);
+			entitiesUnder.get(i).update(width, height, screen);
 		}
 		for (int i = 0; i < entitiesOver.size(); i++) {
-			entitiesOver.get(i).update(screen);
+			entitiesOver.get(i).update(width, height, screen);
 		}
 	}
 
