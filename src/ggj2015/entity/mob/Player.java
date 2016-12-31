@@ -14,7 +14,7 @@ public class Player extends Mob {
 	private Keyboard input;
 	private Sprite sprite;
 	private Level level;
-	private int anim = 0, rollStep = 0, jumpStep = 0;
+	private int anim = 0, jumpStep = 0;
 	double jumpSpeed = 0.0, timerY = 0.0, rollTimer = 0.0;
 	double timerX = 0.0, lastDir = 0.0, slowStep = 0.0;
 	private boolean walking = false, slowing = false, jumping = false, landing = false;

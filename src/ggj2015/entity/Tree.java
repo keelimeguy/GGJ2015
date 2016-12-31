@@ -8,7 +8,7 @@ public class Tree extends Entity {
 
 	public Sprite sprite;
 	private int clicks = 0;
-	private boolean falling = false, breaking = false, solid = true, clickable = false, clicked = false;
+	private boolean falling = false, solid = true, clickable = false, clicked = false;
 
 	public void update(int width, int height, Screen screen) {
 		if (Mouse.getX() > (x - screen.xOffset + 110) * width / screen.width && Mouse.getX() < (sprite.SIZE_X + x - screen.xOffset - 138) * width / screen.width && Mouse.getY() > (y - screen.yOffset + 100) * height / screen.height && Mouse.getY() < (sprite.SIZE_Y - screen.yOffset + y) * height / screen.height || Mouse.getX() > (x - screen.xOffset + 30) * width / screen.width && Mouse.getX() < (sprite.SIZE_X - screen.xOffset + x - 30) * width / screen.width && Mouse.getY() > (y - screen.yOffset + 30) * height / screen.height && Mouse.getY() < (y - screen.yOffset + 130) * height / screen.height) {

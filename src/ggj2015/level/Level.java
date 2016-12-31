@@ -45,9 +45,6 @@ public class Level {
 		}
 	}
 
-	private void time() {
-	}
-
 	/**
 	 * Renders all the tiles on the screen
 	 * @param xScroll : The scroll offset of the screen in the x direction (in pixels)
@@ -70,7 +67,7 @@ public class Level {
 	public boolean findCollision(double x, double y, int dir) {
 		for (int i = 0; i < entitiesUnder.size(); i++) {
 			Entity e = entitiesUnder.get(i);
-			if(e.collide(x, y, dir))return true;
+			if (e.collide(x, y, dir)) return true;
 		}
 		return false;
 	}

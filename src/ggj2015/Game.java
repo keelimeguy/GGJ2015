@@ -1,5 +1,13 @@
 package ggj2015;
 
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+
+import javax.swing.JFrame;
+
 import ggj2015.entity.Mud;
 import ggj2015.entity.Tree;
 import ggj2015.entity.Wall;
@@ -15,17 +23,6 @@ import ggj2015.input.Mouse;
 import ggj2015.level.Level;
 import ggj2015.sound.MusicPlayer;
 import ggj2015.sound.SoundPlayer;
-
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-
-import javax.swing.JFrame;
 
 public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
@@ -139,11 +136,9 @@ public class Game extends Canvas implements Runnable {
 	 */
 	public void run() {
 		long lastTime = System.nanoTime();
-		long timer = System.currentTimeMillis();
+		System.currentTimeMillis();
 		final double ns = 1000000000.0 / 60.0;
-		double delta = 0, dt = 0;
-		int frames = 0, updates = 0;
-
+		double delta = 0;
 		requestFocus();
 
 		String audioFilePath = "/audio/music/Riley's Jig (Game Version).wav";
@@ -159,19 +154,10 @@ public class Game extends Canvas implements Runnable {
 			// Update 60 times a second
 			while (delta >= 1) {
 				update();
-				updates++;
 				delta--;
 			}
 			Graphics g = getGraphics();
 			update(g);
-			frames++;
-			// Keep track of and display the game's ups and fps every second
-			/*if (System.currentTimeMillis() - timer >= 1000) {
-				timer += 1000;
-				frame.setTitle(title + " | ups: " + updates + ", fps: " + frames);
-				updates = 0;
-				frames = 0;
-			}*/
 		}
 
 		// If we get out of the game loop stop the game
@@ -254,13 +240,13 @@ public class Game extends Canvas implements Runnable {
 
 		// Create the game
 		Game game = new Game();
-		game.frame.setResizable(true);
-		game.frame.setTitle(Game.title);
-		game.frame.add(game);
-		game.frame.pack();
-		game.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		game.frame.setLocationRelativeTo(null);
-		game.frame.setVisible(true);
+		Game.frame.setResizable(true);
+		Game.frame.setTitle(Game.title);
+		Game.frame.add(game);
+		Game.frame.pack();
+		Game.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Game.frame.setLocationRelativeTo(null);
+		Game.frame.setVisible(true);
 
 		// Start the game
 		game.start();

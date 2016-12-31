@@ -1,12 +1,5 @@
 package ggj2015.sound;
 
-/**
- *
- * @author Mangusbrother 
- * with edits by keelimeguy
- */
-
-import java.io.File;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
